@@ -106,7 +106,7 @@ $(document).ready(function () {
 
 
     // This must be a hyperlink
-    $("#export").click(function (event) {
+    $(".export").click(function (event) {
         // var outputFile = 'export'
         var month = window.prompt("Which month do you want to export data from? (Please give the full name of the month and capitalize the first letter of the month.)") || 'export';
          
@@ -295,7 +295,7 @@ $(document).ready(function () {
 
             <div id="csv{{month}}">
               <div class="button">
-                  <a href="#" id ="export" role="button">Export names, emails, and change type of all participants for this month into a CSV File</a>
+                  <a href="#" class ="export" role="button">Export names, emails, and change type of all participants for this month into a CSV File</a>
               </div>
               <br>
               <table id="employeeTable" style="display:none">
