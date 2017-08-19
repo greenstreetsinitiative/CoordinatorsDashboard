@@ -1,6 +1,7 @@
 from __future__ import division
 from django.shortcuts import render
 from survey.models import Commutersurvey, Employer, Leg, Month, Team, Mode, Sector, get_surveys_by_employer, QuestionOfTheMonth, EmployerMonthInfo
+from retail.models import event
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 # from django.db.models import Sum,Count
@@ -526,6 +527,18 @@ def line_graph(x, y, legend_labels, x_label, y_label, title):
     script, div = components(p)
     return script, div
     
+
+def getUpdateTime():
+
+    for theevent in event.objects.all():
+        if theevent.id == 4:
+
+            return datetime.date.strftime(theevent.date, "%A, %B %d, %Y at %I:%M%p")
+
+    return ""
+
+
+
 #Employer Information Page
 def info(request, secret_code, year):    
     employer_id = None
@@ -620,6 +633,8 @@ def info(request, secret_code, year):
     change_script, change_div = make_change_line_graph(employer, int(month), year)
     cumulative_data = cumulative(year, employer)
 
+    updateTime = getUpdateTime()
+
     return render_to_response('employer.html', {
         'all_months_data': all_months_data,
         'employer': employer,
@@ -636,6 +651,7 @@ def info(request, secret_code, year):
         'months': long_months,
         'employees_totals_by_letter': employees_totals_by_letter,
         'all_count': count,
+        'update_time': updateTime,
     })
 
 # Render data for all months for Employer Information Page
