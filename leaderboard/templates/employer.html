@@ -305,9 +305,11 @@ $(document).ready(function () {
               <table id="employeeTable" style="display:none">
                 <tr><th>Last Name</th><th>First Name</th><th>Email</th><th>Change Type</th></tr>
                   {% for letter, employees in data.employees_by_letter.items %}
+                  {% if letter != "all" %}
                   {% for employee in employees %}
                     <tr><td>{{employee.last}}</td><td>{{employee.first}}</td><td>{{employee.email}}</td><td>{{employee.change_type}}</td></tr>
                   {% endfor %}
+                  {% endif %}
                   {% endfor %}
                 <tr></tr>
               </table>
@@ -547,6 +549,7 @@ $(document).ready(function () {
               <table id="employeeTable" style="display:none">
                 <tr><th>Last Name</th><th>First Name</th><th>Email</th><th>Change Type</th></tr>
                   {% for letter, employees in employees_totals_by_letter.items %}
+                  {% if letter == "all" %}
                   {% for employee in employees %}
                     {% if employee.color == "green" %}
                       <tr><td>{{employee.last}}</td><td>{{employee.first}}</td><td>{{employee.email}}</td><td>Positive</td></tr>
@@ -554,6 +557,7 @@ $(document).ready(function () {
                       <tr><td>{{employee.last}}</td><td>{{employee.first}}</td><td>{{employee.email}}</td><td>None/Negative</td></tr>
                     {% endif %}
                   {% endfor %}
+                  {% endif %}
                   {% endfor %}
                 <tr></tr>
               </table>
