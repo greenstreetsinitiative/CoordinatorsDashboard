@@ -144,9 +144,6 @@ $(document).ready(function () {
         <center>
           <h1 style="margin-bottom: 0px;padding-bottom: 0px;"><strong>{{employer.name}}</strong></h1>
 
-          <h6 style="margin-top: 0px;padding-top: 0px;"> Last updated: {{update_time}} </h6>
-          <br/>
-
           {% if company.nr_members %}
           <p>{{company.nr_members | intcomma}} team members eligible to participate</p>
           {% elif company.nr_employees %}
