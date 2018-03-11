@@ -556,12 +556,11 @@ def info(request, secret_code, year):
 
     now = datetime.datetime.now()
     if year != now.year:
-        int_month = 11
-    if now.month in [1,2,3,12]:
-        int_month = 11
+        int_month = 10
+    if now.month in [1,2,3,11,12]:
+        int_month = 10
     else:
         int_month = now.month
-    # int_month -= 1
     int_to_intstr_month = {4: "04", 5: "05", 6: "06", 7: "07", 8: "08", 9: "09", 10: "10"}
     month = int_to_intstr_month[int_month]
 
