@@ -692,7 +692,7 @@ $(document).ready(function () {
 	        <div class="tab-pane" id="{{month}}question">
 	        {% endif %}
 
-        <h1>Question of the Month: <i>{{data.question}}</i></h1>
+        <h1>Question of the Month: <i>{{data.question|linebreaks}}</i></h1>
         <br><br>
         {% for comment in data.comments %}
             {{comment}} <hr>
