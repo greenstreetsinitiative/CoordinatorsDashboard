@@ -209,7 +209,7 @@ def get_month_data(employer, month, year, replace=False):
         else:
             return json.loads(month_info.dict_data)
     except (EmployerMonthInfo.DoesNotExist, EmployerMonthInfo.MultipleObjectsReturned):
-        save_month_data(employer, month, year)
+        return save_month_data(employer, month, year)
 
 # Takes a long time, only call this when database is empty.
 def save_all_data(employer=None, replace=False):
