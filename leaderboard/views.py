@@ -361,18 +361,26 @@ def latest_leaderboard(request, year=2016, sector='all', size='all', parentid=No
 
 
 def cumulative(year, employer):  # calculate statistics for employer for the year
-    carbon_n = employer.total_C02_n('all',year)
-    carbon_wr = employer.total_C02_wr('all', year)
-    carbon_saved = employer.total_C02('all', year)
+    short_months = ['04', '05', '06', '07', '08', '09', '10']
+
+    carbon_n = 0
+    carbon_wr = 0
+    carbon_saved = 0
+    calories_wr = 0
+    calories_n = 0
+    num_checkins = 0
     all_legs_n = {}
     all_legs_wr = {}
-    employer_info = calculate_metrics(employer, 'all', 2016)
-    calories_wr = employer.total_calories('all', year)
-    calories_n = employer.total_calories_n('all', year)
-    num_checkins = employer.count_checkins('all', year)
 
-    short_months = ['04','05','06','07','08','09','10']
     for month in short_months:
+        carbon_n += employer.total_C02_n(month, year)
+        carbon_wr += employer.total_C02_wr(month, year)
+        carbon_saved += employer.total_C02(month, year)
+
+        calories_wr += employer.total_calories(month, year)
+        calories_n += employer.total_calories_n(month, year)
+        num_checkins += employer.count_checkins(month, year)
+
         month_data = get_month_data(employer, month, year)
         if not month_data:
             continue
