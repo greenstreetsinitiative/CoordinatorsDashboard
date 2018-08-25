@@ -117,6 +117,17 @@ $(document).ready(function () {
         // We actually need this to be a typical hyperlink
     });
 
+    $(".exportComments").click(function (event) {
+        // var outputFile = 'export'
+        var month = window.prompt("Which month do you want to export data from? (Please give the full name of the month and capitalize the first letter of the month.)") || 'export';
+
+        // CSV
+        exportTableToCSV.apply(this, [$('#' + month + 'question > table'), month+'_comments.csv']);
+
+        // IF CSV, don't do event.preventDefault() or return false
+        // We actually need this to be a typical hyperlink
+    });
+
     $("#exportAll").click(function (event) {
         // CSV
         exportTableToCSV.apply(this, [$('#csvAll > table'), 'all_employees.csv']);
@@ -671,7 +682,10 @@ $(document).ready(function () {
       <div role="tabpanel" class="tab-pane" id="comments">
 
 	<div class="container">
-
+          <div class="button">
+              <a href="#" class ="exportComments" role="button">Export questions and comments for this month into a CSV File</a>
+          </div>
+          <br>
 		  <ul class="nav nav-tabs">
 			<li class="active">
 			  {% for month in months %}
@@ -683,7 +697,7 @@ $(document).ready(function () {
 			  {% endfor %}
 			</li>
 		  </ul>
-
+          <br/>
 		  <div class="tab-content ">
 			{% for month, data in all_months_data.items %}
 
@@ -695,9 +709,27 @@ $(document).ready(function () {
 
         <h1>Question of the Month: <i>{{data.question|linebreaks}}</i></h1>
         <br><br>
+
         {% for comment in data.comments %}
             {{comment}} <hr>
         {% endfor %}
+
+        <table id="commentTable" style="display:none">
+            <tr>
+            {% for question in data.split_questions %}
+                {% for sub_question in question %}
+                <th>{{ sub_question }}</th>
+                {% endfor %}
+            {% endfor %}
+            </tr>
+            {% for comment in data.split_comments %}
+                <tr>
+                {% for sub_comment in comment %}
+                    <td>{{ sub_comment }}</td>
+                {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
 	</div>
        {% endfor %}
       </div>

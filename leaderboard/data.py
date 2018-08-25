@@ -187,8 +187,11 @@ def render_month_data(employer, month, year):
     employer_info['total_carbon'] = employer.total_C02_wr(month, year)
     employer_info['percent_participation'] = employer.percent_participation(month, year)*100
     employer_info['count'] = count
+    split_comments = get_split_comments(comments)
+    split_questions = get_split_comments([question])
+
     month_data = {'employer_info': employer_info, 'employees_by_letter': employees_by_letter, 'comments': comments, 'employer_legs_n': employer_legs_n, \
-                        'employer_legs_wr': employer_legs_wr, 'question': question}
+                        'employer_legs_wr': employer_legs_wr, 'question': question, 'split_comments' : split_comments, 'split_questions' : split_questions}
     return month_data
 
 def save_month_data(employer, month, year,):
@@ -227,3 +230,64 @@ def save_all_data(employer=None, replace=False):
         for year in range(2015, now.year+1):
             for month in short_months:
                 get_month_data(employer, month, year, replace)
+import re
+
+def get_split_comments(comments):
+    resultList = []
+    for comment in comments:
+        startIndex = []
+
+        if (re.search(r'#1.', comment) is not None):
+            startIndex.append(re.search(r'#1.', comment).start())
+        else:
+            startIndex.append(-1)
+
+        if (re.search(r'#2.', comment) is not None):
+            startIndex.append(re.search(r'#2.', comment).start())
+        else:
+            startIndex.append(-1)
+
+        if (re.search(r'#3.', comment) is not None):
+            startIndex.append(re.search(r'#3.', comment).start())
+        else:
+            startIndex.append(-1)
+
+        if (re.search(r'#4.', comment) is not None):
+            startIndex.append(re.search(r'#4.', comment).start())
+        else:
+            startIndex.append(-1)
+
+        if (re.search(r'#5.', comment) is not None):
+            startIndex.append(re.search(r'#5.', comment).start())
+        else:
+            startIndex.append(-1)
+
+        startEnd = []
+        for i, startSearch in enumerate(startIndex):
+            start = -1
+            if startSearch == -1:
+                end = -1
+            else:
+                start = startSearch
+                end = len(comment)
+                for j, endSearch in enumerate(startIndex):
+                    if j <= i:
+                        continue
+                    else:
+                        if endSearch > -1:
+                            end = endSearch
+                            break
+
+            startEnd.append((start, end))
+
+        result = []
+        for se in startEnd:
+            if se[0] == -1:
+                result.append("")
+            else:
+                start = int(se[0])
+                end = int(se[1])
+                sub_comment = comment[start:end].strip(" \t\n\r")
+                result.append(sub_comment)
+        resultList.append(result)
+    return resultList
